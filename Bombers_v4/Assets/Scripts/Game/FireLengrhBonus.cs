@@ -6,7 +6,7 @@ namespace Assets.Scripts
     {
         public override void UpBonus(CharacterTraits characterTraits)
         {
-            characterTraits.flameLength++;
+            characterTraits.FlameLength++;
         }
 
     }

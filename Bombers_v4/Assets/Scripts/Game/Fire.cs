@@ -1,6 +1,7 @@
+using Photon.Pun;
 using UnityEngine;
 
-public class Fire : Damager
+public class Fire : Damager, IPunInstantiateMagicCallback
 {
     [SerializeField] private float _delay;
 
@@ -9,7 +10,13 @@ public class Fire : Damager
         Invoke(nameof(DestroyGameObject), _delay);
     }
 
-    void DestroyGameObject() => Destroy(gameObject);
+    void DestroyGameObject()  
+    {
+        var isOwner = _photonView.Owner == PhotonNetwork.LocalPlayer;
+        if (!isOwner)
+            return;
+        PhotonNetwork.Destroy(gameObject); 
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -17,6 +24,12 @@ public class Fire : Damager
         if (gameobject != null)
             gameobject.Hp -= Damage;
     }
-    
 
+
+    PhotonView _photonView;
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        _photonView = info.photonView;
+    }
 }

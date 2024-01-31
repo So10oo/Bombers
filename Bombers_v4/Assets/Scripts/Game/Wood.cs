@@ -8,9 +8,11 @@ public class Wood : HealthPoint
 {
     public override void Die()
     {
-        Destroy(gameObject);
+       // Destroy(gameObject);
 
         if (!PhotonNetwork.IsMasterClient) return;
+
+        PhotonNetwork.Destroy(this.gameObject);
 
         if (Random.Range(0f, 1f) > 0.5f)
         {

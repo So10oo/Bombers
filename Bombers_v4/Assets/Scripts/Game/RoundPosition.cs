@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class RoundPosition : MonoBehaviour
 {
+#if UNITY_EDITOR
     [ContextMenu("RoundPositionBlocks")]
     void RoundPositionBlocks()
     {
@@ -11,5 +12,5 @@ public class RoundPosition : MonoBehaviour
             child.position = Vector3Int.RoundToInt(child.position);
         }
     }
-
+#endif
 }

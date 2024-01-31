@@ -1,25 +1,37 @@
 using Assets.Scripts;
+using Photon.Pun;
 using System;
+using System.Globalization;
 using UnityEngine;
 
-public class Bomb : MonoBehaviour
+public class Bomb : MonoBehaviour, IPunInstantiateMagicCallback
 {
     [SerializeField] private GameObject _fire;
     [SerializeField] private float _delay;
     [SerializeField] private protected LayerMask StopLayer;
 
-    [HideInInspector] public int FlameLength;
     [HideInInspector] public event Action OnBlow;
 
-    void Start() => Invoke(nameof(Blow), _delay);
+    private int _flameLength;
+
+    void Start()
+    {
+        Invoke(nameof(Blow), _delay);
+    }
 
     private void Blow()
     {
-        Destroy(gameObject);
+        OnBlow?.Invoke();
+
+        var isOwner = _photonView.Owner == PhotonNetwork.LocalPlayer;
+        if (!isOwner)
+            return;
+
+        PhotonNetwork.Destroy(gameObject);
         var pos = transform.position;
-        Instantiate(_fire, pos, Quaternion.identity);
+        PhotonNetwork.Instantiate(_fire.name, pos, Quaternion.identity);
         var (left, right, down, up) = (true, true, true, true);
-        for (int i = 1; i <= FlameLength; i++)
+        for (int i = 1; i <= _flameLength; i++)
         {
             if (left)
                 left = InstantiateFire(pos, Vector3.left, i);
@@ -31,7 +43,7 @@ public class Bomb : MonoBehaviour
                 up = InstantiateFire(pos, Vector3.up, i);
         }
 
-        OnBlow?.Invoke();
+
     }
 
     private bool InstantiateFire(Vector3 pos, Vector3 direction, int i)
@@ -40,7 +52,7 @@ public class Bomb : MonoBehaviour
         var block = Physics2D.OverlapPoint(_pos, StopLayer);
         if (!block)
         {
-            Instantiate(_fire, _pos, Quaternion.identity);
+            PhotonNetwork.Instantiate(_fire.name, _pos, Quaternion.identity);
             return true;
         }
         else
@@ -51,7 +63,7 @@ public class Bomb : MonoBehaviour
                 switch (attitudeToFire.StatusAttitudeToFire)
                 {
                     case AttitudeToFire.AttitudeFire.Absorb:
-                        Instantiate(_fire, _pos, Quaternion.identity);
+                        PhotonNetwork.Instantiate(_fire.name, _pos, Quaternion.identity);
                         break;
                     case AttitudeToFire.AttitudeFire.Stops:
                         break;
@@ -73,6 +85,15 @@ public class Bomb : MonoBehaviour
                 return;
         }
         gameObject.layer = LayerMask.NameToLayer("Barriers");
+    }
+
+    PhotonView _photonView;
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        _photonView = info.photonView;
+        var data = _photonView.InstantiationData;
+        _flameLength = (int)data[0];
     }
 }
 

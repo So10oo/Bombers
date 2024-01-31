@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Damager : MonoBehaviour
 {
-    [SerializeField] float _damage;
+    [SerializeField] byte _damage;
 
-    public float Damage => _damage;
+    public byte Damage => _damage;
 }

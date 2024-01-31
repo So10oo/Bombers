@@ -9,13 +9,16 @@ public class SpawnPlayer : MonoBehaviour
     [SerializeField] Transform[] _points;
 
     //GameObject playerGO;
+    [Header("Display")]
+    [SerializeField] DisplayEntity displayCharacterTraits;
+
 
     private void Start()
     {
         Spawn();
     }
 
-    public void Spawn()
+    private void Spawn()
     {
         if (_points == null && _points.Length != 4)
         {
@@ -27,7 +30,14 @@ public class SpawnPlayer : MonoBehaviour
         {
             if (PhotonNetwork.PlayerList[index] == PhotonNetwork.LocalPlayer)
             {
-                PhotonNetwork.Instantiate(_player.name, _points[index].position, Quaternion.identity);
+                var player = PhotonNetwork.Instantiate(_player.name, _points[index].position, Quaternion.identity);
+                if (displayCharacterTraits != null) 
+                {
+                    var playerManager = player.GetComponent<PlayerManager>();
+                    playerManager.CharacterTraits.OnCharacterTraitsChanged += displayCharacterTraits.Display;
+                }
+                
+
             }
          
         }

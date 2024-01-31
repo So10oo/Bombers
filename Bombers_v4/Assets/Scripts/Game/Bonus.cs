@@ -1,9 +1,17 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Bonus : MonoBehaviour
+public abstract class Bonus : MonoBehaviour, IPunInstantiateMagicCallback
 {
+    PhotonView _photonView;
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        _photonView = info.photonView;   
+    }
+
     public virtual void UpBonus(CharacterTraits characterTraits)
     { }
 

@@ -47,11 +47,11 @@ namespace Photon.Pun.Demo.Asteroids
         {
             PhotonNetwork.AutomaticallySyncScene = true;
             //PhotonNetwork.NetworkingClient.LoadBalancingPeer.DisconnectTimeout = int.MaxValue;
-         
+
 
             cachedRoomList = new Dictionary<string, RoomInfo>();
             roomListEntries = new Dictionary<string, GameObject>();
-            
+
             PlayerNameInput.text = "Player " + Random.Range(1000, 10000);
         }
 
@@ -128,7 +128,7 @@ namespace Photon.Pun.Demo.Asteroids
                 object isPlayerReady;
                 if (p.CustomProperties.TryGetValue(BombersGame.PLAYER_READY, out isPlayerReady))
                 {
-                    entry.GetComponent<PlayerListEntry>().SetPlayerReady((bool) isPlayerReady);
+                    entry.GetComponent<PlayerListEntry>().SetPlayerReady((bool)isPlayerReady);
                 }
 
                 playerListEntries.Add(p.ActorNumber, entry);
@@ -197,7 +197,7 @@ namespace Photon.Pun.Demo.Asteroids
                 object isPlayerReady;
                 if (changedProps.TryGetValue(BombersGame.PLAYER_READY, out isPlayerReady))
                 {
-                    entry.GetComponent<PlayerListEntry>().SetPlayerReady((bool) isPlayerReady);
+                    entry.GetComponent<PlayerListEntry>().SetPlayerReady((bool)isPlayerReady);
                 }
             }
 
@@ -281,17 +281,20 @@ namespace Photon.Pun.Demo.Asteroids
 
         private bool CheckPlayersReady()
         {
-            if (!PhotonNetwork.IsMasterClient)
-            {
-                return false;
-            }
+            if (!PhotonNetwork.IsMasterClient) return false;
+
+#if UNITY_EDITOR
+
+#else
+            if (PhotonNetwork.PlayerList.Length <= 1) return false;
+#endif
 
             foreach (Player p in PhotonNetwork.PlayerList)
             {
                 object isPlayerReady;
                 if (p.CustomProperties.TryGetValue(BombersGame.PLAYER_READY, out isPlayerReady))
                 {
-                    if (!(bool) isPlayerReady)
+                    if (!(bool)isPlayerReady)
                     {
                         return false;
                     }
@@ -304,7 +307,7 @@ namespace Photon.Pun.Demo.Asteroids
 
             return true;
         }
-        
+
         private void ClearRoomListView()
         {
             foreach (GameObject entry in roomListEntries.Values)
@@ -375,7 +378,7 @@ namespace Photon.Pun.Demo.Asteroids
         private RoomOptions GetRoomOptions()
         {
             //return new RoomOptions { MaxPlayers = 4, PlayerTtl = 1000, CleanupCacheOnLeave = false };
-            return new RoomOptions { MaxPlayers = 4 };
+            return new RoomOptions { MaxPlayers = 4, PlayerTtl = 1000, CleanupCacheOnLeave = false };
         }
     }
 }

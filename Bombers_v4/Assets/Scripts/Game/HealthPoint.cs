@@ -3,28 +3,25 @@ using UnityEngine;
 
 public class HealthPoint : MonoBehaviour
 {
-    [SerializeField] float MaxHp;
-    
-    protected event Action<float> OnDamage;
+    [SerializeField] protected byte MaxHp;
 
-    bool isDead = false;
-    protected bool isInvulnerable = false;
+    protected bool isDead = false;
 
-    private float _hp;
-    public float Hp
+    protected virtual void OnHpChandged(byte hp)
+    {
+        _hp = hp;
+        if (_hp <= 0 && !isDead)
+        {
+            Die();
+        }
+    }
+
+    protected byte _hp;
+    public byte Hp
     { 
         set
         {
-            if (_hp > value && !isInvulnerable)
-            {       
-                _hp = value; 
-                if (_hp <= 0 && !isDead)
-                {
-                    Die();
-                    isDead = true;
-                }
-                OnDamage?.Invoke(_hp / MaxHp);
-            }
+            OnHpChandged(value);
         }
         get
         {
@@ -45,5 +42,6 @@ public class HealthPoint : MonoBehaviour
     public virtual void Die()
     {
         Destroy(gameObject);
+        isDead = true;
     }
 }

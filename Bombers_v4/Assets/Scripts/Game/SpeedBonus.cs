@@ -6,7 +6,7 @@ namespace Assets.Scripts
     {
         public override void UpBonus(CharacterTraits characterTraits)
         {
-            characterTraits.speed += 0.3f;
+            characterTraits.Speed += 0.3f;
         }
     }
 }

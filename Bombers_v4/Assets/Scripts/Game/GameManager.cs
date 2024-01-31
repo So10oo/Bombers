@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] float _timeSetBlock;
     [SerializeField] GameObject _block;
     [SerializeField] Transform _parentBlocks;
-    [SerializeField] bool _isEndGame;
+    //[SerializeField] bool _isEndGame;
 
     float TimeStartEndGame
     {
@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     #region MonoBehaviour
-    
+
     public void Start()
     {
         ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable
@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             {BombersGame.PLAYER_LOADED_LEVEL, true}
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
     }
 
     public override void OnDisable()
@@ -58,31 +59,32 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     IEnumerator StartGame()
     {
-        if (_isEndGame)
+
+        var traversal = ClockwiseTraversal(-8, -5, 8, 5);
+        yield return new WaitForSeconds(TimeStartEndGame);
+        int index = 0;
+        while (true)
         {
-            var traversal = ClockwiseTraversal(-8, -5, 8, 5);
-            yield return new WaitForSeconds(TimeStartEndGame);
-            int index = 0;
-            while (true)
+            if (index < traversal.Count)
             {
-                if (index < traversal.Count)
+                if (PhotonNetwork.IsMasterClient)
                 {
-                    Instantiate(_block, (Vector2)traversal[index], Quaternion.identity, _parentBlocks);
-                    index++;
-                    if (index != traversal.Count)
-                        yield return new WaitForSeconds(TimeSetBlock);
-                    else
-                        break;
+                    var block = PhotonNetwork.InstantiateRoomObject(_block.name, (Vector2)traversal[index], Quaternion.identity);
+                    //block.transform.SetParent(_parentBlocks);
                 }
+                index++;
+                if (index != traversal.Count)
+                    yield return new WaitForSeconds(TimeSetBlock);
+                else
+                    break;
             }
         }
-
     }
 
     private void OnCountdownTimerIsExpired()
-    {
-        StartCoroutine(StartGame());
-        _spawnPlayer.SetActive(true);
+    {     
+        StartCoroutine(StartGame());//запускаем таймер конца игры
+        _spawnPlayer.SetActive(true);//Спавним игроков 
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
@@ -101,7 +103,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
         }
     }
- 
+
 
     List<Vector2Int> ClockwiseTraversal(int x_min, int y_min, int x_max, int y_max)
     {
