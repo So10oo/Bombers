@@ -1,9 +1,5 @@
 mergeInto(LibraryManager.library, {
 
-  Hello: function () {
-    window.alert("Hello, world!");
-  },
-  
   IsPhone: function () {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     // код для мобильных устройств
@@ -12,6 +8,19 @@ mergeInto(LibraryManager.library, {
     // код для обычных устройств
     return false;
     }
+  },
+
+  ShowAdv: function () {
+    ysdk.adv.showFullscreenAdv({
+    callbacks: {
+        onClose: function(wasShown) {
+          // some action after close
+        },
+        onError: function(error) {
+          // some action on error
+        }
+      }
+    })
   },
 
 });

@@ -378,7 +378,7 @@ namespace Photon.Pun.Demo.Asteroids
         private RoomOptions GetRoomOptions()
         {
             //return new RoomOptions { MaxPlayers = 4, PlayerTtl = 1000, CleanupCacheOnLeave = false };
-            return new RoomOptions { MaxPlayers = 4, PlayerTtl = 1000, CleanupCacheOnLeave = false };
+            return new RoomOptions { MaxPlayers = 4, PlayerTtl = 1000 };
         }
     }
 }

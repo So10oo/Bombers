@@ -9,21 +9,15 @@ public class SpawnPlayer : MonoBehaviour
     [SerializeField] Transform[] _points;
 
     //GameObject playerGO;
-    [Header("Display")]
-    [SerializeField] DisplayEntity displayCharacterTraits;
+    
 
 
-    private void Start()
-    {
-        Spawn();
-    }
-
-    private void Spawn()
+    public void Spawn()
     {
         if (_points == null && _points.Length != 4)
         {
-            Debug.Log("ћассив поинтов имеет неверный формат");
-            return;
+            Debug.LogError("ћассив поинтов имеет неверный формат");
+            return ;
         }
 
         for (int index = 0; index < PhotonNetwork.PlayerList.Length; index++)
@@ -31,16 +25,16 @@ public class SpawnPlayer : MonoBehaviour
             if (PhotonNetwork.PlayerList[index] == PhotonNetwork.LocalPlayer)
             {
                 var player = PhotonNetwork.Instantiate(_player.name, _points[index].position, Quaternion.identity);
-                if (displayCharacterTraits != null) 
-                {
-                    var playerManager = player.GetComponent<PlayerManager>();
-                    playerManager.CharacterTraits.OnCharacterTraitsChanged += displayCharacterTraits.Display;
-                }
-                
-
+                PhotonNetwork.LocalPlayer.TagObject = player;
+                //return player;
+                //if (displayCharacterTraits != null) 
+                //{
+                //    var playerManager = player.GetComponent<PlayerManager>();
+                //    playerManager.CharacterTraits.OnCharacterTraitsChanged += displayCharacterTraits.Display;
+                //}
             }
-         
         }
+       
     }
 
 

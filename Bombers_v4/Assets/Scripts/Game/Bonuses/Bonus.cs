@@ -1,9 +1,7 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Bonus : MonoBehaviour, IPunInstantiateMagicCallback
+public abstract class Bonus: MonoBehaviour, IPunInstantiateMagicCallback
 {
     PhotonView _photonView;
 
@@ -12,15 +10,18 @@ public abstract class Bonus : MonoBehaviour, IPunInstantiateMagicCallback
         _photonView = info.photonView;   
     }
 
-    public virtual void UpBonus(CharacterTraits characterTraits)
+    public virtual void UpBonus(PlayerManager playerManager)
     { }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<PlayerManager>() is PlayerManager player)
         {
-            UpBonus(player.CharacterTraits);
-            Destroy(gameObject);
+            UpBonus(player);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
+            if (!PhotonNetwork.IsMasterClient) return;
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 }

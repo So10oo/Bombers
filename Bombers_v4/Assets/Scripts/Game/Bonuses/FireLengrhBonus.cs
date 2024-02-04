@@ -4,9 +4,9 @@ namespace Assets.Scripts
 {
     public class FireLengrhBonus : Bonus
     {
-        public override void UpBonus(CharacterTraits characterTraits)
+        public override void UpBonus(PlayerManager playerManager)
         {
-            characterTraits.FlameLength++;
+            playerManager.CharacterTraits.FlameLength++;
         }
 
     }

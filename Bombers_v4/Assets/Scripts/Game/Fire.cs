@@ -31,5 +31,6 @@ public class Fire : Damager, IPunInstantiateMagicCallback
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         _photonView = info.photonView;
+        //_photonView.RPC(name,RpcTarget.)
     }
 }

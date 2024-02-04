@@ -14,7 +14,7 @@ namespace Assets.Scripts
                 return;
             else
             {
-                var s = speed * Time.fixedDeltaTime;
+                var s = speed * Time.deltaTime;
                 var x = transform.position.x;
                 var y = transform.position.y;
                 float s1;

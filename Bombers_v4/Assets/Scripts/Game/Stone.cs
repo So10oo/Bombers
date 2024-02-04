@@ -4,9 +4,14 @@ public class Stone : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<HealthPoint>() is HealthPoint healthPoint)
+        var go = collision.gameObject;
+        if (go.GetComponent<HealthPoint>() is HealthPoint healthPoint)
         {
             healthPoint.Die();
+        }
+        else if (go.GetComponent<Bonus>() is Bonus || go.GetComponent<Bomb>() is Bomb) 
+        {
+            Destroy(go);
         }
     }
 }

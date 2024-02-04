@@ -6,8 +6,8 @@ public class IsPhoneScript : MonoBehaviour
     [DllImport("__Internal")]
     private static extern bool IsPhone();
 
-    [DllImport("__Internal")]
-    private static extern void Hello();
+    //[DllImport("__Internal")]
+    //private static extern void Hello();
 
     private void Start()
     {
