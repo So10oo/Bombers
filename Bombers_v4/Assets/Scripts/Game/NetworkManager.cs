@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class NetworkManager : MonoBehaviourPunCallbacks
+public class LobbyManager : MonoBehaviourPunCallbacks
 {
     [Header("GameManager")]
     [SerializeField] GameManager _gameManager;

@@ -17,10 +17,6 @@ public class Wood : HealthPoint
         {
             var bonus = _bonuses[Random.Range(0,_bonuses.Count)];
             PhotonNetwork.InstantiateRoomObject(bonus.name, transform.position, Quaternion.identity);
-            //object[] content = new object[] { Random.value, transform.position };
-            //RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-            //PhotonNetwork.RaiseEvent((byte)RaiseEvent.WodToBonus, content, raiseEventOptions, SendOptions.SendReliable);
-
         }
 
     }

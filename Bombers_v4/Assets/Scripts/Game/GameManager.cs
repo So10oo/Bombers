@@ -38,7 +38,8 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
-        if (PhotonNetwork.LocalPlayer.TagObject is GameObject playerObject && playerObject != null)
+        var tagPlayerInfo = (TagPlayerInfo)PhotonNetwork.LocalPlayer.TagObject;
+        if (tagPlayerInfo.PlayerGameObject is GameObject playerObject && playerObject != null)
         {
             playerObject.GetComponent<PlayerManager>().enabled = false;
         }
@@ -50,7 +51,8 @@ public class GameManager : MonoBehaviour
         _spawnPlayer.Spawn();
         if (_displayCharacterTraits != null)
         {
-            var playerManager = ((GameObject)PhotonNetwork.LocalPlayer.TagObject).GetComponent<PlayerManager>();
+            var tagPlayerInfo = (TagPlayerInfo)PhotonNetwork.LocalPlayer.TagObject;
+            var playerManager = (tagPlayerInfo.PlayerGameObject).GetComponent<PlayerManager>();
             playerManager.CharacterTraits.OnCharacterTraitsChanged += _displayCharacterTraits.Display;
             _displayCharacterTraits.Display(playerManager.CharacterTraits);
         }
@@ -98,7 +100,7 @@ public class GameManager : MonoBehaviour
                 if (PhotonNetwork.IsMasterClient)
                 {
                     var block = PhotonNetwork.InstantiateRoomObject(_block.name, (Vector2)traversal[index], Quaternion.identity);
-                    block.transform.SetParent(_parentBlocks);
+                    //block.transform.SetParent(_parentBlocks);
                 }
                 index++;
                 if (index != traversal.Count)

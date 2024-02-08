@@ -6,8 +6,7 @@ public class RoundPosition : MonoBehaviour
     [ContextMenu("RoundPositionBlocks")]
     void RoundPositionBlocks()
     {
-        var children = GetComponentsInChildren<Transform>();
-        foreach (Transform child in children) 
+        foreach (Transform child in transform.GetChilds()) 
         {
             child.position = Vector3Int.RoundToInt(child.position);
         }

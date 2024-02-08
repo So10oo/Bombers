@@ -1,0 +1,12 @@
+﻿using System;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+
+[System.Serializable]
+public class Map : ScriptableObject
+{
+    public List<BlocksPosition> Blocks = new List<BlocksPosition>();
+}
+
+ 

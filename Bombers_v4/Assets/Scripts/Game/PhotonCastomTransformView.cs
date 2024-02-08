@@ -1,5 +1,4 @@
 using Photon.Pun;
-using System.IO;
 using UnityEngine;
 
 public class PhotonCastomTransformView : MonoBehaviour, IPunObservable
@@ -15,15 +14,26 @@ public class PhotonCastomTransformView : MonoBehaviour, IPunObservable
     private void Start()
     {
         pos = transform.position;
+
+        //_networkPosition = (Vector2)transform.position;
+        //_lastPositionNetwork = (Vector2)transform.position; 
     }
 
     private void Update()
     {
         if (_photonView.IsMine) return;
 
+        //timeSerialization += Time.deltaTime;
+        //transform.position = Vector3.Lerp(_lastPositionNetwork, _futurePosition, timeSerialization * PhotonNetwork.SerializationRate);
         var a = Vector3.Distance(transform.position, pos);
         transform.position = Vector3.MoveTowards(transform.position, pos, a * Time.deltaTime * PhotonNetwork.SerializationRate);//Vector2.Lerp(transform.position, pos, 0.1f);
     }
+
+    //Vector2 _networkPosition;
+    //Vector2 _lastPositionNetwork;
+    //Vector2 _futurePosition;
+    //float timeSerialization = 0;
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -45,8 +55,16 @@ public class PhotonCastomTransformView : MonoBehaviour, IPunObservable
             var y_read = (byte)stream.ReceiveNext();
             float y = (y_read * 10f / 255f) - 5f;
 
+            //_networkPosition = new Vector2(x, y);
+            //var directions = _networkPosition - _lastPositionNetwork;
+            //_lastPositionNetwork = _networkPosition;
+            //_futurePosition = _networkPosition + directions;
+            //Debug.Log(timeSerialization);
+            //timeSerialization = 0f;
+
             pos = new Vector2(x, y);
         }
     }
 
 }
+

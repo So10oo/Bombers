@@ -6,7 +6,6 @@ using UnityEngine;
 public class PlayerManager : MoveController, IPunInstantiateMagicCallback
 {   
     [SerializeField] GameObject _bomb;
-   // PhotonView _photonView;
     readonly CharacterTraits _characterTraits = new();
     private int _currentBombQuantity = 0;
     const float _timeDelaySetBomb = 0.1f;
@@ -37,7 +36,6 @@ public class PlayerManager : MoveController, IPunInstantiateMagicCallback
             }
             if (_currentBombQuantity < CharacterTraits.BombQuantity)
             {
-                //_photonView.RPC(nameof(SetBomb), RpcTarget.AllViaServer, new Vector3(posInt.x, posInt.y, 0), _characterTraits.flameLength);
                 SetBomb(new Vector3(posInt.x, posInt.y, 0), _characterTraits.FlameLength);
                 _currentBombQuantity++;
                 _buttonBomb = false;
@@ -49,18 +47,11 @@ public class PlayerManager : MoveController, IPunInstantiateMagicCallback
 
     #region MonoBehaviour
 
-    //private void Awake()
-    //{
-    //    _photonView = GetComponent<PhotonView>();
-    //}
 
     private void Update()
     {
-        //if (!_photonView.IsMine) return;
-
         BombManager();
         SetMove(GetInput(), _characterTraits.Speed);
-
     }
 
     /*
@@ -72,12 +63,7 @@ public class PlayerManager : MoveController, IPunInstantiateMagicCallback
      * 3. я двигаюсь вниз
      *  -- когда не хватает пути до округления и ближайшее округление ниже по координате 
      */
-    //private void FixedUpdate()
-    //{
-    //    //if (!_photonView.IsMine) return;
-        
-    //    //SetMove(GetInput(), _characterTraits.Speed);
-    //}
+ 
     #endregion
 
     #region Pun
@@ -88,10 +74,6 @@ public class PlayerManager : MoveController, IPunInstantiateMagicCallback
         {    
             this.enabled = false;
         }
-        //else
-        //{
-        //    _photonView = info.photonView;
-        //}
     }
 
     #endregion

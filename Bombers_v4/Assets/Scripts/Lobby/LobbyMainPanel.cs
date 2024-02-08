@@ -96,14 +96,7 @@ namespace Photon.Pun.Demo.Asteroids
             SetActivePanel(SelectionPanel.name);
         }
 
-        public override void OnJoinRandomFailed(short returnCode, string message)
-        {
-            string roomName = "Room " + Random.Range(1000, 10000);
-
-            RoomOptions options = GetRoomOptions();
-
-            PhotonNetwork.CreateRoom(roomName, options, null);
-        }
+        
 
         public override void OnJoinedRoom()
         {

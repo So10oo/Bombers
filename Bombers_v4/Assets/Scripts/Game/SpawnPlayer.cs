@@ -25,13 +25,9 @@ public class SpawnPlayer : MonoBehaviour
             if (PhotonNetwork.PlayerList[index] == PhotonNetwork.LocalPlayer)
             {
                 var player = PhotonNetwork.Instantiate(_player.name, _points[index].position, Quaternion.identity);
-                PhotonNetwork.LocalPlayer.TagObject = player;
-                //return player;
-                //if (displayCharacterTraits != null) 
-                //{
-                //    var playerManager = player.GetComponent<PlayerManager>();
-                //    playerManager.CharacterTraits.OnCharacterTraitsChanged += displayCharacterTraits.Display;
-                //}
+                PhotonNetwork.LocalPlayer.TagObject ??= new TagPlayerInfo();
+                var tagPlayerInfo = (TagPlayerInfo)PhotonNetwork.LocalPlayer.TagObject;
+                tagPlayerInfo.PlayerGameObject = player;
             }
         }
        

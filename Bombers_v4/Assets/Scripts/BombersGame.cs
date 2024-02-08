@@ -15,6 +15,8 @@ public class BombersGame
 
     public const string PLAYER = "Player";
 
+    public const string PlayerColor = "PlayerColor";
+
     public static Color GetColor(int colorChoice)
     {
         switch (colorChoice)
