@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 910864430784211955}
   - component: {fileID: 3884983254378961167}
+  - component: {fileID: 7967752732285556477}
   m_Layer: 0
   m_Name: View
   m_TagString: Untagged
@@ -72,8 +73,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 7088fc349034cbf40951358750d5e8f2, type: 3}
+  m_SortingOrder: 50
+  m_Sprite: {fileID: 21300000, guid: d42ebea88d4356c469b78a3ed08e4681, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -84,6 +85,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &7967752732285556477
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 676081407570342284}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5f9d073a6fae81b44934ace0e8665f9f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7937997894882819294
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,7 +134,7 @@ Transform:
   m_GameObject: {fileID: 7937997894882819294}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: -3, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -153,7 +175,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.4
+  m_Radius: 0.35
 --- !u!114 &-7918404372014849072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +193,9 @@ MonoBehaviour:
   StopLayer:
     serializedVersion: 2
     m_Bits: 64
+  c_fire: {fileID: 3430917635876096606, guid: 0fd9f21158d8d88448c59d90b88d2345, type: 3}
+  l_fire: {fileID: 9109364958414643728, guid: 63c93db1f4438df4aa99c53d0a04745a, type: 3}
+  k_fire: {fileID: 7085413585662104954, guid: 61e51ea3e6d87a149aa6d7dfeb9fa65f, type: 3}
 --- !u!114 &-8864929564422473593
 MonoBehaviour:
   m_ObjectHideFlags: 0

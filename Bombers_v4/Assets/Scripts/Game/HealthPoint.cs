@@ -4,24 +4,37 @@ using UnityEngine;
 public class HealthPoint : MonoBehaviour
 {
     [SerializeField] protected byte MaxHp;
-
     protected bool isDead = false;
 
-    protected virtual void OnHpChandged(byte hp)
+    public Action<byte> onHealth;
+    public Action<byte> onDamage;
+
+    public virtual void TakeDamage(byte damage)
     {
-        _hp = hp;
-        if (_hp <= 0 && !isDead)
-        {
-            Die();
-        }
+        int tempHp = Hp - damage;
+        Hp = tempHp < 0 ? (byte)0 : (byte)tempHp;
+        onDamage?.Invoke(Hp);
     }
 
-    protected byte _hp;
-    public byte Hp
-    { 
-        set
+    public virtual void Healing(byte healing)
+    {
+        int tempHp = Hp + healing;
+        Hp = tempHp > MaxHp ? MaxHp : (byte)tempHp;
+        onHealth?.Invoke(Hp);
+    }
+
+    private byte _hp;
+
+    protected byte Hp
+    {
+        private set
         {
-            OnHpChandged(value);
+            _hp = value;
+            if (_hp <= 0 && !isDead)
+            {
+                Die();
+                isDead = true;
+            }
         }
         get
         {
@@ -36,12 +49,11 @@ public class HealthPoint : MonoBehaviour
 
     public virtual void StartMonoBehaviour()
     {
-        _hp = MaxHp;
+        Hp = MaxHp;
     }
 
     public virtual void Die()
     {
         Destroy(gameObject);
-        isDead = true;
     }
 }

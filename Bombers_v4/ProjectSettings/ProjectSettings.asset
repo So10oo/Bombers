@@ -871,11 +871,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: Bombersv4
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: 
+  metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
+  metroCertificateSubject: SoloIndustries
+  metroCertificateIssuer: SoloIndustries
+  metroCertificateNotAfter: 00ba38821183db01
   metroApplicationDescription: Bombers_v4
   wsaImages: {}
   metroTileShortName: Bombers_v4

@@ -1,5 +1,6 @@
 using ExitGames.Client.Photon;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 public class CreateRoomMap : MonoBehaviourPunCallbacks
@@ -13,10 +14,20 @@ public class CreateRoomMap : MonoBehaviourPunCallbacks
         ChoosingIndexMap();
     }
 
+    public override void OnJoinedRoom()
+    {
+        var prob = PhotonNetwork.CurrentRoom.CustomProperties;
+        if (prob.ContainsKey(MAP_ROOM))
+        {
+            CreateMap(maps[(int)prob[MAP_ROOM]]);
+        }
+    }
+
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
         if (propertiesThatChanged.ContainsKey(MAP_ROOM))
         {
+            Debug.Log("Создаём карту");
             DelatyCurrentMap();
             int index = (int)propertiesThatChanged[MAP_ROOM];
             CreateMap(maps[index]);
@@ -41,11 +52,11 @@ public class CreateRoomMap : MonoBehaviourPunCallbacks
             foreach (var pos in blocks.Positions)
             {
                 GameObject go;
-                if (isNetworkComponent && PhotonNetwork.IsMasterClient)
+                if (isNetworkComponent)
                     go = PhotonNetwork.InstantiateRoomObject(block.name, pos, Quaternion.identity);
                 else
                     go = Instantiate(block, pos, Quaternion.identity);
-                go.transform.SetParent(transform);
+                go?.transform.SetParent(transform);
             }
         }
     }
@@ -59,7 +70,9 @@ public class CreateRoomMap : MonoBehaviourPunCallbacks
         {
             var isNetworkComponent = item.GetComponent<PhotonView>() is PhotonView;
             if (isNetworkComponent && PhotonNetwork.IsMasterClient)
-                PhotonNetwork.Destroy(item.gameObject);
+            {
+                //PhotonNetwork.Destroy(item.gameObject);
+            }
             else
                 Destroy(item.gameObject);
         }

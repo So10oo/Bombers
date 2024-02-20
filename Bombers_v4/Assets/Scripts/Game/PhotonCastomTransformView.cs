@@ -4,8 +4,8 @@ using UnityEngine;
 public class PhotonCastomTransformView : MonoBehaviour, IPunObservable
 {
     private Vector2 pos;
-
     PhotonView _photonView;
+
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
@@ -14,7 +14,6 @@ public class PhotonCastomTransformView : MonoBehaviour, IPunObservable
     private void Start()
     {
         pos = transform.position;
-
         //_networkPosition = (Vector2)transform.position;
         //_lastPositionNetwork = (Vector2)transform.position; 
     }
@@ -22,7 +21,6 @@ public class PhotonCastomTransformView : MonoBehaviour, IPunObservable
     private void Update()
     {
         if (_photonView.IsMine) return;
-
         //timeSerialization += Time.deltaTime;
         //transform.position = Vector3.Lerp(_lastPositionNetwork, _futurePosition, timeSerialization * PhotonNetwork.SerializationRate);
         var a = Vector3.Distance(transform.position, pos);

@@ -7,13 +7,10 @@ public class PlayerManager : MoveController, IPunInstantiateMagicCallback
 {   
     [SerializeField] GameObject _bomb;
     readonly CharacterTraits _characterTraits = new();
-    private int _currentBombQuantity = 0;
-    const float _timeDelaySetBomb = 0.1f;
-    bool _buttonBomb = true;
-    void RestetButtonBomb() => _buttonBomb = true;
-
     public CharacterTraits CharacterTraits => _characterTraits;
 
+
+    private int _currentBombQuantity = 0;
     private void SetBomb(Vector3 pos, int fireLengrh)
     {
         object[] objects = { fireLengrh };
@@ -21,6 +18,9 @@ public class PlayerManager : MoveController, IPunInstantiateMagicCallback
         bomb.GetComponent<Bomb>().OnBlow += () => _currentBombQuantity--;
     }
 
+    float _timeDelaySetBomb = 0.1f;
+    bool _buttonBomb = true;
+    void RestetButtonBomb() => _buttonBomb = true;
     private void BombManager()
     {
         if (Input.GetKey(KeyCode.Space) && _buttonBomb)
@@ -47,7 +47,6 @@ public class PlayerManager : MoveController, IPunInstantiateMagicCallback
 
     #region MonoBehaviour
 
-
     private void Update()
     {
         BombManager();
@@ -63,7 +62,6 @@ public class PlayerManager : MoveController, IPunInstantiateMagicCallback
      * 3. я двигаюсь вниз
      *  -- когда не хватает пути до округления и ближайшее округление ниже по координате 
      */
- 
     #endregion
 
     #region Pun
@@ -73,6 +71,8 @@ public class PlayerManager : MoveController, IPunInstantiateMagicCallback
         if (!info.photonView.IsMine)
         {    
             this.enabled = false;
+            var healthPoint = GetComponent<PlayerHealthPoint>();
+            healthPoint.enabled = false; 
         }
     }
 

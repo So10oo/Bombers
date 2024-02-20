@@ -6,8 +6,8 @@ public class AttitudeToFire : MonoBehaviour
 
     public enum AttitudeFire
     {
-        //Skips,//пропускает 
         Absorb,//впитывает
         Stops,//останавливает
+        Skips,//пропускает 
     }
 }

@@ -1,5 +1,6 @@
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SpawnPlayer : MonoBehaviour
 {
@@ -8,9 +9,8 @@ public class SpawnPlayer : MonoBehaviour
     [SerializeField] GameObject _player;
     [SerializeField] Transform[] _points;
 
-    //GameObject playerGO;
-    
-
+    [Header("Events")]
+    [SerializeField] UnityEvent _onSpawn;
 
     public void Spawn()
     {
@@ -22,16 +22,21 @@ public class SpawnPlayer : MonoBehaviour
 
         for (int index = 0; index < PhotonNetwork.PlayerList.Length; index++)
         {
-            if (PhotonNetwork.PlayerList[index] == PhotonNetwork.LocalPlayer)
+            if (PhotonNetwork.PlayerList[index].IsLocal)/*.LocalPlayer.IsLocal*/
             {
-                var player = PhotonNetwork.Instantiate(_player.name, _points[index].position, Quaternion.identity);
                 PhotonNetwork.LocalPlayer.TagObject ??= new TagPlayerInfo();
-                var tagPlayerInfo = (TagPlayerInfo)PhotonNetwork.LocalPlayer.TagObject;
+                var tagPlayerInfo = PhotonNetwork.LocalPlayer.TagObject as TagPlayerInfo;
+                if (tagPlayerInfo.PlayerGameObject != null)
+                    PhotonNetwork.Destroy(tagPlayerInfo.PlayerGameObject);
+
+                var player = PhotonNetwork.Instantiate(_player.name, _points[index].position, Quaternion.identity);
+
                 tagPlayerInfo.PlayerGameObject = player;
+                _onSpawn?.Invoke();
             }
         }
        
     }
-
+     
 
 }

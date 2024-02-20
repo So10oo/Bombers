@@ -85,7 +85,7 @@ namespace Photon.Pun.UtilityScripts
             if (!this.isTimerRunning) return;
 
             float countdown = TimeRemaining();
-            this.Text.text = string.Format("Game starts in {0} seconds", countdown.ToString("n0"));
+            this.Text.text = string.Format("Game starts in {0} seconds", countdown.ToString("n2"));
 
             if (countdown > 0.0f) return;
 
@@ -96,13 +96,13 @@ namespace Photon.Pun.UtilityScripts
         private void OnTimerRuns()
         {
             this.isTimerRunning = true;
-            this.enabled = true;
+           // this.enabled = true;
         }
 
         private void OnTimerEnds()
         {
             this.isTimerRunning = false;
-            this.enabled = false;
+            //this.enabled = false;
 
             Debug.Log("Emptying info text.", this.Text);
             this.Text.text = string.Empty;
@@ -113,8 +113,9 @@ namespace Photon.Pun.UtilityScripts
 
         public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
         {
-            Debug.Log("CountdownTimer.OnRoomPropertiesUpdate " + propertiesThatChanged.ToStringFull());
-            Initialize();
+            //Debug.Log("CountdownTimer.OnRoomPropertiesUpdate " + propertiesThatChanged.ToStringFull());
+            if(propertiesThatChanged.ContainsKey(CountdownStartTime))
+                Initialize();
         }
 
 
@@ -150,7 +151,7 @@ namespace Photon.Pun.UtilityScripts
             object startTimeFromProps;
             if (PhotonNetwork.CurrentRoom != null && PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(CountdownStartTime, out startTimeFromProps))
             {
-               // startTimestamp = (int)startTimeFromProps;
+                startTimestamp = (int)startTimeFromProps;
                 return true;
             }
  

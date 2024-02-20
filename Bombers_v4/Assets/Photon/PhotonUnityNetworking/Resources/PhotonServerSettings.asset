@@ -40,6 +40,10 @@ MonoBehaviour:
   - ClickRpc
   - DestroyRpc
   - PlayerDie
+  - SynchronizationView
+  - SynchronizationInvulnerable
+  - SynchronizationHeal_PunRPC
+  - SynchronizationInvulnerable_PunRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

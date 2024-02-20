@@ -1,8 +1,9 @@
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 
 public class DisplayEntity : MonoBehaviour
-{  
+{
     private TextMeshProUGUI _display;
 
     private void Awake()
@@ -10,8 +11,18 @@ public class DisplayEntity : MonoBehaviour
         _display = GetComponent<TextMeshProUGUI>();
     }
 
-    public void Display<T>(T num)
+    private void Display<T>(T num)
     {
         _display.text = num.ToString();
+    }
+
+    public void DisplayPlayerInfo()
+    {
+        var tagPlayerInfo =  PhotonNetwork.LocalPlayer.TagObject as TagPlayerInfo;
+        if (tagPlayerInfo == null) return;
+
+        var playerManager = (tagPlayerInfo.PlayerGameObject).GetComponent<PlayerManager>();
+        playerManager.CharacterTraits.OnCharacterTraitsChanged += this.Display;
+        this.Display(playerManager.CharacterTraits);
     }
 }

@@ -22,15 +22,13 @@ public class Fire : Damager, IPunInstantiateMagicCallback
     {
         var gameobject = collision.gameObject.GetComponent<HealthPoint>();
         if (gameobject != null)
-            gameobject.Hp -= Damage;
+            gameobject.TakeDamage(Damage);
     }
-
 
     PhotonView _photonView;
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         _photonView = info.photonView;
-        //_photonView.RPC(name,RpcTarget.)
     }
 }

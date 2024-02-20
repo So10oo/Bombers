@@ -3,14 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Display")]
-    [SerializeField] DisplayEntity _displayCharacterTraits;
+    //[Header("Display")]
+    //[SerializeField] DisplayEntity _displayCharacterTraits;
 
-    [Header("SpawnPlayer")]
-    [SerializeField] SpawnPlayer _spawnPlayer;
+    //[Header("SpawnPlayer")]
+    //[SerializeField] SpawnPlayer _spawnPlayer;
+
+    [Header("Events")]
+    [SerializeField] UnityEvent _afterEndGame;
+    [SerializeField] float _timeAfterEndGame;
 
     [Header("End Game")]
     [SerializeField] float _timeStartEndGame;
@@ -38,58 +43,32 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
-        var tagPlayerInfo = (TagPlayerInfo)PhotonNetwork.LocalPlayer.TagObject;
+        var tagPlayerInfo = PhotonNetwork.LocalPlayer.TagObject as TagPlayerInfo;
         if (tagPlayerInfo.PlayerGameObject is GameObject playerObject && playerObject != null)
         {
             playerObject.GetComponent<PlayerManager>().enabled = false;
         }
-        StopCoroutine(_coroutineGame);
+
+        if(_coroutineGame != null) 
+            StopCoroutine(_coroutineGame);
+
+        Invoke(nameof(AfterEndGame), _timeAfterEndGame < 0 ? 0 : _timeAfterEndGame);
     }
 
-    public void Initialization()
-    {
-        _spawnPlayer.Spawn();
-        if (_displayCharacterTraits != null)
-        {
-            var tagPlayerInfo = (TagPlayerInfo)PhotonNetwork.LocalPlayer.TagObject;
-            var playerManager = (tagPlayerInfo.PlayerGameObject).GetComponent<PlayerManager>();
-            playerManager.CharacterTraits.OnCharacterTraitsChanged += _displayCharacterTraits.Display;
-            _displayCharacterTraits.Display(playerManager.CharacterTraits);
-        }
-    }
     #endregion
 
     #region MonoBehaviour
 
-    //public void Start()
-    //{
-    //    ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable
-    //    {
-    //        {BombersGame.PLAYER_LOADED_LEVEL, true}
-    //    };
-    //    PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-
-    //}
-
-    //public override void OnDisable()
-    //{
-    //    base.OnDisable();
-    //    CountdownTimer.OnCountdownTimerHasExpired -= OnCountdownTimerIsExpired;
-    //}
-
-    //public override void OnEnable()
-    //{
-    //    base.OnEnable();
-    //    CountdownTimer.OnCountdownTimerHasExpired += OnCountdownTimerIsExpired;
-    //}
-
     #endregion
 
     #region Private metod
+    void AfterEndGame()
+    {
+        _afterEndGame?.Invoke();
+    }
 
     IEnumerator StartEndGame()
     {
-
         var traversal = ClockwiseTraversal(-8, -5, 8, 5);
         yield return new WaitForSeconds(TimeStartEndGame);
         int index = 0;
@@ -110,29 +89,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    //private void OnCountdownTimerIsExpired()
-    //{     
-    //    StartCoroutine(StartGame());//запускаем таймер конца игры
-    //    _spawnPlayer.SetActive(true);//Спавним игроков 
-    //}
-
-    //public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
-    //{
-    //    if (!changedProps.ContainsKey(BombersGame.PLAYER_LOADED_LEVEL)) return;
-    //    int startTimestamp;
-    //    bool startTimeIsSet = CountdownTimer.TryGetStartTime(out startTimestamp);
-    //    if (changedProps.ContainsKey(BombersGame.PLAYER_LOADED_LEVEL))
-    //    {
-    //        if (CheckAllPlayerLoadedLevel())
-    //        {
-    //            if (!startTimeIsSet)
-    //            {
-    //                CountdownTimer.SetStartTime();
-    //            }
-    //        }
-    //    }
-    //}
 
     List<Vector2Int> ClockwiseTraversal(int x_min, int y_min, int x_max, int y_max)
     {
@@ -162,23 +118,6 @@ public class GameManager : MonoBehaviour
         }
         return traversal.ToList();
     }
-
-    //private bool CheckAllPlayerLoadedLevel()
-    //{
-    //    foreach (Player p in PhotonNetwork.PlayerList)
-    //    {
-    //        object playerLoadedLevel;
-    //        if (p.CustomProperties.TryGetValue(BombersGame.PLAYER_LOADED_LEVEL, out playerLoadedLevel))
-    //        {
-    //            if ((bool)playerLoadedLevel)
-    //            {
-    //                continue;
-    //            }
-    //        }
-    //        return false;
-    //    }
-    //    return true;
-    //}
 
     #endregion
 }
