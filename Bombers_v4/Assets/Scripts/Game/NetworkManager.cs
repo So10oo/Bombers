@@ -2,7 +2,6 @@ using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -22,8 +21,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [Header("UI")]
     [SerializeField] TextMeshProUGUI textMeshProUGUI;
 
-    //bool wasConnected = true;
+    
     bool _isGameRunning = false;
+
 
     #region public metod
     public void LeaveRoom()
@@ -37,6 +37,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.Disconnect();
     }
 
+    //bool wasConnected = true;
     //public void Reconnect()
     //{
     //    if (!PhotonNetwork.IsConnected && wasConnected)
@@ -55,7 +56,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        if (_isOffline && !PhotonNetwork.InLobby)
+        if (_isOffline && !PhotonNetwork.InRoom)
         {
             PhotonNetwork.OfflineMode = true;
             PhotonNetwork.JoinRandomOrCreateRoom();
@@ -179,16 +180,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         //Debug.Log("ChackEndGame " + livePlayers);
 
-        if (livePlayers.Length == 1)
+        if (livePlayers.Length <= 1)
         {
-            EndGame(livePlayers.First());
+            EndGame(livePlayers?.First());
             _endGame?.Invoke();
         }
     }
 
     private void EndGame(Player winner)
     {
-        textMeshProUGUI.text = "Игра закончена! Победил " + winner.NickName;
+        textMeshProUGUI.text = "Игра закончена! Победил " + winner?.NickName??"а дружба";
         _isGameRunning = false;
         SetStartPlayerInRoomCustomProperties();
         _endGame?.Invoke();

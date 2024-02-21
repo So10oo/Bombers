@@ -7,12 +7,6 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
-    //[Header("Display")]
-    //[SerializeField] DisplayEntity _displayCharacterTraits;
-
-    //[Header("SpawnPlayer")]
-    //[SerializeField] SpawnPlayer _spawnPlayer;
-
     [Header("Events")]
     [SerializeField] UnityEvent _afterEndGame;
     [SerializeField] float _timeAfterEndGame;

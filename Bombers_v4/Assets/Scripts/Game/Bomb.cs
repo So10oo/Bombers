@@ -124,30 +124,6 @@ public class Bomb : MonoBehaviour, IPunInstantiateMagicCallback
         Vector3 _pos = pos + direction * i;
         Quaternion quaternion = Quaternion.FromToRotation(Vector3.right, direction);
         var canSetCurrentBlock = CanAttitudeFireBlock(_pos);
-        //if (canSetCurrentBlock == AttitudeToFire.AttitudeFire.Absorb)
-        //{
-        //    if (i == imax)
-        //    {
-        //        PhotonNetwork.Instantiate(k_fire.name, _pos, quaternion);
-        //        return false;
-        //    }
-        //    Vector3 _posNext = pos + direction * (i + 1);
-        //    var canSetNextBlock = CanAttitudeFireBlock(_posNext);
-        //    if (canSetNextBlock)
-        //    {
-        //        PhotonNetwork.Instantiate(l_fire.name, _pos, quaternion);
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        PhotonNetwork.Instantiate(k_fire.name, _pos, quaternion);
-        //        return false;
-        //    }
-        //}
-        //else
-        //{
-        //    return false;
-        //}
         if (canSetCurrentBlock == AttitudeToFire.AttitudeFire.Skips)
         {
             if (i == imax)
