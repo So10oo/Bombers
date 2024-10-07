@@ -10,7 +10,6 @@ public class CreateSOBlocks : MonoBehaviour
     [ContextMenu("CreateSOMap")]
     void CreateSOMap()
     {
-
         var map = ScriptableObject.CreateInstance<Map>();
         var WoodBlocks = new BlocksPosition(); 
         WoodBlocks.Block = _wood;

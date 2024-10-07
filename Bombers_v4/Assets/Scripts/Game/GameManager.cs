@@ -39,10 +39,8 @@ public class GameManager : MonoBehaviour
     {
         var tagPlayerInfo = PhotonNetwork.LocalPlayer.TagObject as TagPlayerInfo;
         if (tagPlayerInfo.PlayerGameObject is GameObject playerObject && playerObject != null)
-        {
             playerObject.GetComponent<PlayerManager>().enabled = false;
-        }
-
+        
         if(_coroutineGame != null) 
             StopCoroutine(_coroutineGame);
 

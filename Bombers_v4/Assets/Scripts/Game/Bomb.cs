@@ -1,7 +1,6 @@
 using Assets.Scripts;
 using Photon.Pun;
 using System;
-using System.Globalization;
 using UnityEngine;
 
 public class Bomb : MonoBehaviour, IPunInstantiateMagicCallback
